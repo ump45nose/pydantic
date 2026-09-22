@@ -2538,7 +2538,7 @@ class GenerateJsonSchema:
         from .type_adapter import TypeAdapter, _type_has_config
 
         config = self._config
-        config_dict = config.config_dict
+        config_dict: ConfigDict = config.config_dict
         timedelta_mode = config.ser_json_timedelta
         if self.mode == 'validation':
             # Validation schemas always declare temporal types as ISO 8601 strings
@@ -2554,9 +2554,7 @@ class GenerateJsonSchema:
             default = (
                 dft
                 if _type_has_config(type(dft))
-                else TypeAdapter(type(dft), config=config_dict).dump_python(
-                    dft, by_alias=self.by_alias, mode='json'
-                )
+                else TypeAdapter(type(dft), config=config_dict).dump_python(dft, by_alias=self.by_alias, mode='json')
             )
             return pydantic_core.to_jsonable_python(
                 default,
